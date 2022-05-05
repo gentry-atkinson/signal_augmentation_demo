@@ -8,6 +8,7 @@ from ts_feature_toolkit import get_features_from_one_signal
 import augmentation
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.spatial import distance
 
 if __name__ == '__main__':
     signalLength = 150
@@ -59,6 +60,17 @@ if __name__ == '__main__':
     print('Original to Noise Injection: {}'.format(mse_dict['gaussianNoiseInjection']))
     print('Original to Shifted Amplitude: {}'.format(mse_dict['amplitudeShift']))
     print('Original to Shifted Time Scale: {}'.format(mse_dict['timeShift']))
+
+    print('\n---Cosine Distances---')
+    print('Original to Original: {}'.format(distance.cosine(feature_dict['original'], feature_dict['original'])))
+    print('Original to Second Signal: {}'.format(distance.cosine(feature_dict['original'], feature_dict['second'])))
+    print('Original to Flipped Signal: {}'.format(distance.cosine(feature_dict['original'], feature_dict['flip'])))
+    print('Original to Random Signal Drop: {}'.format(distance.cosine(feature_dict['original'], feature_dict['randomSignalDrop'])))
+    print('Original to Windowed Signal Drop: {}'.format(distance.cosine(feature_dict['original'], feature_dict['windowedSignalDrop'])))
+    print('Original to Periodic Signal Drop: {}'.format(distance.cosine(feature_dict['original'], feature_dict['fixedSignalDrop'])))
+    print('Original to Noise Injection: {}'.format(distance.cosine(feature_dict['original'], feature_dict['gaussianNoiseInjection'])))
+    print('Original to Shifted Amplitude: {}'.format(distance.cosine(feature_dict['original'], feature_dict['amplitudeShift'])))
+    print('Original to Shifted Time Scale: {}'.format(distance.cosine(feature_dict['original'], feature_dict['timeShift'])))
 
     #Flip
     plt.figure()
