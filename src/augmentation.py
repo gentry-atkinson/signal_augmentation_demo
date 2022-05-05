@@ -3,7 +3,7 @@
 #Data: 5 May, 2022
 #Alter signals but keep them recognizable
 
-from random import random, seed, gauss, randint
+from random import random, seed, gauss, randint, choice
 import numpy as np
 
 #Flip
@@ -40,10 +40,31 @@ def wind_signal_drop(originalSignal, start=None, stop=None):
 #Set every nth sample to 0
 def fixed_signal_drop(originalSignal, period=5):
     if period==None:
+        seed()
         period = randint(5, 20)
     return [0 if i%period==0 else originalSignal[i] for i in range(len(originalSignal))]
 
 #Gaussian Noise Injection
 #Add a small, random variance to each sample
 def gau_noise_inj(originalSignal, sigma=None):
-    pass
+    seed()
+    if sigma == None:
+        sigma = 0.05*(max(originalSignal) - min(originalSignal))
+    return [gauss(i, sigma) for i in originalSignal]
+
+#Amplitude Shift
+#Add a fixed amount to the amplitude of the signal
+def amp_shift(originalSignal, shift=None):
+    if shift == None:
+        seed()
+        shift = choice([-0.1, 0.1])*(max(originalSignal) - min(originalSignal))
+    return [i+shift for i in originalSignal]
+
+#Time Shift
+#Move a signal forward or backwards in time
+def time_shift(originalSignal, shift=None):
+    signalLength = len(originalSignal)
+    if shift == None:
+        seed()
+        shift = choice([-0.1, 0.1])*signalLength
+    return [originalSignal[(i+shift)%signalLength] for i in range(signalLength)]
