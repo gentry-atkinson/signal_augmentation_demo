@@ -14,7 +14,7 @@ def flip(originalSignal):
 
 #Random Signal Drop
 #Set some samples to 0 with random chance
-def rand_signal_drop(originalSignal, chance=0.05):
+def rand_signal_drop(originalSignal, chance=0.1):
     seed()
     return [i if random() > chance else 0 for i in originalSignal] 
 
@@ -49,7 +49,7 @@ def fixed_signal_drop(originalSignal, period=5):
 def gau_noise_inj(originalSignal, sigma=None):
     seed()
     if sigma == None:
-        sigma = 0.05*(max(originalSignal) - min(originalSignal))
+        sigma = 0.02*(max(originalSignal) - min(originalSignal))
     return [gauss(i, sigma) for i in originalSignal]
 
 #Amplitude Shift
@@ -66,5 +66,5 @@ def time_shift(originalSignal, shift=None):
     signalLength = len(originalSignal)
     if shift == None:
         seed()
-        shift = choice([-0.1, 0.1])*signalLength
+        shift = int(choice([-0.2, 0.2])*signalLength)
     return [originalSignal[(i+shift)%signalLength] for i in range(signalLength)]
